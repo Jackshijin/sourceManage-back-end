@@ -1,3 +1,5 @@
+
+let mode = 'PRODUCTION';
 let  Email = {
   redis: {
     get host () {
@@ -34,15 +36,36 @@ let nodeMailer = require('nodemailer')
 let mysql = require('mysql')
 
 let pool
-pool = mysql.createPool({
-  host: 'localhost',
-  port: '3306',
-  user: 'root',
-  password: '12345',
-  database: 'sourcemanage',
-  connectionLimit: '10',
-  multipleStatements: true
-})
+if (mode === 'PRODUCTION') {
+  pool = mysql.createPool({
+    host: '120.78.15.79',
+    port: '3306',
+    user: 'root',
+    password: 'Wushijin123',
+    database: 'sourcemanage',
+    connectionLimit: '50',
+    multipleStatements: true
+  })
+} else {
+  pool = mysql.createPool({
+    host: 'localhost',
+    port: '3306',
+    user: 'root',
+    password: '12345',
+    database: 'sourcemanage',
+    connectionLimit: '10',
+    multipleStatements: true
+  })
+}
+// pool = mysql.createPool({
+//   host: 'localhost',
+//   port: '3306',
+//   user: 'root',
+//   password: '12345',
+//   database: 'sourcemanage',
+//   connectionLimit: '10',
+//   multipleStatements: true
+// })
 
 // 导包
 let express = require('express')
@@ -75,7 +98,11 @@ server.use(express.urlencoded({
 server.use(express.json())
 
 server.use(function (request, response, next) {
-  response.header("Access-Control-Allow-Origin", "http://localhost:8080");//前端域名
+  if (mode === 'PRODUCTION') {
+    response.header("Access-Control-Allow-Origin", "http://120.78.15.79")
+  } else {
+    response.header("Access-Control-Allow-Origin", "http://localhost:8080");//前端域名
+  }
   response.header("Access-Control-Allow-Credentials",'true');
   response.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
