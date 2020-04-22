@@ -102,7 +102,7 @@ server.use(express.json())
 
 server.use(function (request, response, next) {
   if (mode === 'PRODUCTION') {
-    response.header("Access-Control-Allow-Origin", "*")
+    response.header("Access-Control-Allow-Origin", "http://localhost:8080")
   } else {
     response.header("Access-Control-Allow-Origin", "http://localhost:8080");//前端域名
   }
