@@ -1,9 +1,12 @@
 
 let mode = 'PRODUCTION';
+// let mode = 'DEVELOPMENT';
+
 let  Email = {
   redis: {
     get host () {
-      return '127.0.0.1'
+      // return '127.0.0.1'
+      return '120.78.15.79'
     },
     get port () {
       return 6379
@@ -41,8 +44,8 @@ if (mode === 'PRODUCTION') {
     host: '120.78.15.79',
     port: '3306',
     user: 'root',
-    password: 'Wushijin123',
-    database: 'sourcemanage',
+    password: '123456',
+    database: 'sourceManage',
     connectionLimit: '50',
     multipleStatements: true
   })
@@ -99,7 +102,7 @@ server.use(express.json())
 
 server.use(function (request, response, next) {
   if (mode === 'PRODUCTION') {
-    response.header("Access-Control-Allow-Origin", "http://120.78.15.79")
+    response.header("Access-Control-Allow-Origin", "*")
   } else {
     response.header("Access-Control-Allow-Origin", "http://localhost:8080");//前端域名
   }
