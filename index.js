@@ -5,7 +5,7 @@ let mode = 'PRODUCTION';
 let  Email = {
   redis: {
     get host () {
-      // return '127.0.0.1'
+      // return '127.0.0.1' 本地地址
       return '120.78.15.79'
     },
     get port () {
