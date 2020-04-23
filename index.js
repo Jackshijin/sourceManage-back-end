@@ -89,6 +89,10 @@ server.use(session({
   }
 }))
 
+// 解决项目上线点击浏览器刷新按钮会404
+let history = require('connect-history-api-fallback');
+app.use(history());
+// 前端代码快速部署
 server.use(express.static(path.join(__dirname,'dist')))
 
 let port = 5050
