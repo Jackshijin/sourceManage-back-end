@@ -75,7 +75,7 @@ let express = require('express')
 let cookieParser = require('cookie-parser')
 let session = require('express-session')
 // let jwt = require('jwt-simple')
-
+let path = require('path')
 let server = express()
 // server.set('jwtTokenSecret', 'WSJ')
 server.use(cookieParser())
@@ -88,6 +88,8 @@ server.use(session({
     secure: false
   }
 }))
+
+server.use(express.static(path.join(__dirname,'dist')))
 
 let port = 5050
 server.listen(port, () => {
