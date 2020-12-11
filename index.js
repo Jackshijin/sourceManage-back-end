@@ -6,7 +6,7 @@ let  Email = {
   redis: {
     get host () {
       // return '127.0.0.1' 本地地址
-      return '120.78.15.79'
+      return '120.78.15.79' // 线上地址
     },
     get port () {
       return 6379
@@ -20,55 +20,46 @@ let  Email = {
       return '1668150723@qq.com'
     },
     get pass() {
-      return 'wurchudpuqaheaed' // smtp授权码
+      return '******' // smtp授权码,如何获取可以自行百度
     },
     get code() {
       return () => {
-        return Math.random().toString(16).slice(2,6).toUpperCase()
+        return Math.random().toString(16).slice(2,6).toUpperCase() // 随机4位验证码字母转大写
       }
     },
     get expire() {
       return ()=>{
-        return new Date().getTime()+60*60*1000
+        return new Date().getTime()+60*60*1000 // 验证码过期时间
       }
     }
   }
 }
-let nodeMailer = require('nodemailer')
+let nodeMailer = require('nodemailer') // 发邮件的一个库，可以自行百度
 
 let mysql = require('mysql')
 
 let pool
-if (mode === 'PRODUCTION') {
+if (mode === 'PRODUCTION') { // 线上服务器地址
   pool = mysql.createPool({
     host: '120.78.15.79',
     port: '3306',
     user: 'root',
-    password: '123456',
-    database: 'sourceManage',
+    password: '***', // 密码
+    database: 'sourceManage', // 数据库名称
     connectionLimit: '50',
     multipleStatements: true
   })
 } else {
-  pool = mysql.createPool({
+  pool = mysql.createPool({ // 开发环境
     host: 'localhost',
     port: '3306',
     user: 'root',
-    password: '12345',
+    password: '***',
     database: 'sourcemanage',
     connectionLimit: '10',
     multipleStatements: true
   })
 }
-// pool = mysql.createPool({
-//   host: 'localhost',
-//   port: '3306',
-//   user: 'root',
-//   password: '12345',
-//   database: 'sourcemanage',
-//   connectionLimit: '10',
-//   multipleStatements: true
-// })
 
 // 导包
 let express = require('express')
@@ -106,6 +97,7 @@ server.use(express.urlencoded({
 
 server.use(express.json())
 
+// 设置跨域的请求头和请求方法等
 server.use(function (request, response, next) {
   if (mode === 'PRODUCTION') {
     response.header("Access-Control-Allow-Origin", "http://localhost:8080")
@@ -118,6 +110,7 @@ server.use(function (request, response, next) {
   next()
 })
 
+// 使用redis前端库
 let Redis = require('redis')
 let client = Redis.createClient()
 client.on("error", function (err) {
@@ -126,7 +119,7 @@ client.on("error", function (err) {
 });
 
 /**
- * 发送验证码
+ * 发送验证码接口
  */
 server.post('/user/verify', (req, res) => {
   let userName = req.body.userName
@@ -167,7 +160,7 @@ server.post('/user/verify', (req, res) => {
 })
 
 /**
- * 注册
+ * 注册接口
  */
 server.post('/user/signup', (req, res) => {
   const {
@@ -217,7 +210,7 @@ server.post('/user/signup', (req, res) => {
 })
 
 /**
- * 用户登录
+ * 用户登录接口
  * @params [name,password] 必选
  *
  */
@@ -500,7 +493,7 @@ server.post('/apply/create', (request, response) => {
   }
   let sqlOne = 'insert into source_apply values(null,?,?,?,NOW(),?,?)';
   let sqlTwoFinish = false;
-  // 创建报销单
+  // 创建申请表
   pool.query(sqlOne, [sourceName, cause, applier, next_deal_role, status], (errOne, result) => {
     if (errOne) {
       response.json({code: 500, msg:'服务器错误'});
