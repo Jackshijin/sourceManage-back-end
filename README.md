@@ -47,7 +47,7 @@
 * 验证码保存用redis， 用的这个库，[传送门](https://github.com/NodeRedis/node-redis)
 * 本地开发要设置跨域请求头，在前端处理也可以，如果部署到线上，需要在服务器配置nginx跨域，[推荐了解](https://www.jianshu.com/p/734ef8e5a712)
 
-## Clone&Use
+## Clone&Run
 * 首先创建一个本地的数据库，将相关sql表格导入，然后配置mysql连接池，包括域名、端口号、账户密码、数据库名称等
 * 然后根据前端的端口配置跨域的域名和端口号，node index.js 就可以启动服务，默认是在5050端口
 
